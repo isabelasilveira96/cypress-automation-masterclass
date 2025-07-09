@@ -2,11 +2,11 @@
 
 describe("Comandos básicos", () => {
   it("Acessando uma URL", () => {
-    cy.visit("https://automationpratice.com.br/login");
+    cy.visit("/login");
   });
 
   it("Encontrando Elementos", () => {
-    cy.visit("https://automationpratice.com.br/login");
+    cy.visit("/login");
 
     // get() - selecionar/buscar um elemento
     cy.get("#user");
@@ -26,7 +26,7 @@ describe("Comandos básicos", () => {
   });
 
   it("Preenchendo um campo", () => {
-    cy.visit("https://automationpratice.com.br/login");
+    cy.visit("/login");
 
     cy.get("#mc_embed_signup")
       .find(".form-control")
@@ -35,14 +35,14 @@ describe("Comandos básicos", () => {
   });
 
   it("Clicando em um botão", () => {
-    cy.visit("https://automationpratice.com.br/login");
+    cy.visit("/login");
 
     // clicar no botão de login
     cy.get("#btnLogin").click();
   });
 
   it("Selecionando uma opção de uma lista", () => {
-    cy.visit("https://automationpratice.com.br/checkout-one");
+    cy.visit("/checkout-one");
 
     // selecionar uma opção em um select
     // o select permite selecionar uma opção de uma lista
@@ -50,7 +50,7 @@ describe("Comandos básicos", () => {
   });
 
   it("Selecionando um checkbox e um radio button", () => {
-    cy.visit("https://automationpratice.com.br/checkout-one");
+    cy.visit("/checkout-one");
 
     // selecionar um checkbox
     cy.get("#materialUnchecked").check();
@@ -60,7 +60,7 @@ describe("Comandos básicos", () => {
   });
 
   it("Validando um texto", () => {
-    cy.visit("https://automationpratice.com.br/login");
+    cy.visit("/login");
 
     cy.get("#createAccount")
       .should("contain", "Ainda não tem conta?")
