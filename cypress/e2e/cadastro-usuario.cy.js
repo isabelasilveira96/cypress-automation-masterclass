@@ -2,107 +2,100 @@
 
 import { faker } from '@faker-js/faker';
 
+const telas = ["ipad-2","iphone-x", "samsung-s10", "macbook-16"];
+
 describe("Cadastro de Usuário", () => {
-    it("Cadastro com sucesso", () => {
-        const name = faker.person.fullName();
-        cy.visit("/register");
+    telas.forEach((tela) => {
+        let name, email, password;
 
-        // preencher os campos de cadastro
-        cy.get("#user").type(name);
-        cy.get("#email").type("isa.isa@teste.com");
-        cy.get("#password").type("123456");
+        beforeEach(() => {
+            name = faker.person.fullName();
+            email = faker.internet.email();
+            password = faker.internet.password({
+                length: 6,
+                memorable: false,
+                pattern: /\d/,
+                prefix: ''
+            });
+            cy.visit("/register");
+        });
 
-        // clicar no botão de cadastro
-        cy.get("#btnRegister").click();
+        it(`Cadastro com sucesso - ${tela}`, () => {
+            cy.viewport(tela);
 
-        // validar mensagem de sucesso
-        cy.get("#swal2-title").should("have.text", "Cadastro realizado!");
-        cy.get("#swal2-html-container").should("have.text", `Bem-vindo ${name}`);
-    });
+            cy.get("#user").type(name);
+            cy.get("#email").type(email);
+            cy.get("#password").type(password);
 
-    it("Cadastro com nome vazio", () => {
-        cy.visit("/register");
+            cy.get("#btnRegister").click();
 
-        // não preencher o campo nome
-        cy.get("#email").type("isa.isa@teste.com");
-        cy.get("#password").type("123456");
+            cy.get("#swal2-title").should("have.text", "Cadastro realizado!");
+            cy.get("#swal2-html-container").should("have.text", `Bem-vindo ${name}`);
+        });
 
-        // clicar no botão de cadastro
-        cy.get("#btnRegister").click();
+        it(`Cadastro com nome vazio - ${tela}`, () => {
+            cy.viewport(tela);
 
-        // validar mensagem de erro
-        cy.get("#errorMessageFirstName").should("have.text", "O campo nome deve ser prenchido");
-    });
+            cy.get("#email").type(email);
+            cy.get("#password").type(password);
 
-    it("Cadastro com e-mail vazio", () => {
-        cy.visit("/register");
+            cy.get("#btnRegister").click();
 
-        // preencher apenas o nome e a senha
-        cy.get("#user").type("Isa Teste");
-        cy.get("#password").type("123456");
+            cy.get("#errorMessageFirstName").should("have.text", "O campo nome deve ser prenchido");
+        });
 
-        // clicar no botão de cadastro
-        cy.get("#btnRegister").click();
+        it(`Cadastro com e-mail vazio - ${tela}`, () => {
+            cy.viewport(tela);
 
-        // validar mensagem de erro para o campo e-mail
-        cy.get("#errorMessageFirstName").should("have.text", "O campo e-mail deve ser prenchido corretamente");
-    });
+            cy.get("#user").type(name);
+            cy.get("#password").type(password);
 
-    it("Cadastro com senha vazia", () => {
-        cy.visit("/register");
+            cy.get("#btnRegister").click();
 
-        // preencher apenas o nome e o e-mail
-        cy.get("#user").type("Isa Teste");
-        cy.get("#email").type("isa.isa@teste.com");
+            cy.get("#errorMessageFirstName").should("have.text", "O campo e-mail deve ser prenchido corretamente");
+        });
 
-        // não preencher o campo senha
+        it(`Cadastro com senha vazia - ${tela}`, () => {
+            cy.viewport(tela);
 
-        // clicar no botão de cadastro
-        cy.get("#btnRegister").click();
+            cy.get("#user").type(name);
+            cy.get("#email").type(email);
 
-        // validar mensagem de erro para o campo senha
-        cy.get("#errorMessageFirstName").should("have.text", "O campo senha deve ter pelo menos 6 dígitos");
-    });
+            cy.get("#btnRegister").click();
 
-    it("Cadastro com todos os campos vazios", () => {
-        cy.visit("/register");
+            cy.get("#errorMessageFirstName").should("have.text", "O campo senha deve ter pelo menos 6 dígitos");
+        });
 
-        // não preencher nenhum campo
+        it(`Cadastro com todos os campos vazios - ${tela}`, () => {
+            cy.viewport(tela);
 
-        // clicar no botão de cadastro
-        cy.get("#btnRegister").click();
+            cy.get("#btnRegister").click();
 
-        // validar mensagens de erro para todos os campos obrigatórios
-        cy.get("#errorMessageFirstName").should("have.text", "O campo nome deve ser prenchido");
-    });
+            cy.get("#errorMessageFirstName").should("have.text", "O campo nome deve ser prenchido");
+        });
 
-    it("Cadastro com e-mail inválido", () => {
-        cy.visit("/register");
+        it(`Cadastro com e-mail inválido - ${tela}`, () => {
+            cy.viewport(tela);
 
-        // preencher nome e senha, mas e-mail inválido
-        cy.get("#user").type("Isa Teste");
-        cy.get("#email").type("email-invalido");
-        cy.get("#password").type("123456");
+            cy.get("#user").type(name);
+            cy.get("#email").type("email-invalido");
+            cy.get("#password").type(password);
 
-        // clicar no botão de cadastro
-        cy.get("#btnRegister").click();
+            cy.get("#btnRegister").click();
 
-        // validar mensagem de erro para o campo e-mail
-        cy.get("#errorMessageFirstName").should("have.text", "O campo e-mail deve ser prenchido corretamente");
-    });
+            cy.get("#errorMessageFirstName").should("have.text", "O campo e-mail deve ser prenchido corretamente");
+        });
 
-    it("Cadastro com senha inválida", () => {
-        cy.visit("/register");
+        it(`Cadastro com senha inválida - ${tela}`, () => {
+            cy.viewport(tela);
 
-        // preencher nome e e-mail, mas senha inválida (menos de 6 caracteres)
-        cy.get("#user").type("Isa Teste");
-        cy.get("#email").type("isa.isa@teste.com");
-        cy.get("#password").type("123");
+            cy.get("#user").type(name);
+            cy.get("#email").type(email);
+            cy.get("#password").type("123");
 
-        // clicar no botão de cadastro
-        cy.get("#btnRegister").click();
+            cy.get("#btnRegister").click();
 
-        // validar mensagem de erro para o campo senha
-        cy.get("#errorMessageFirstName").should("have.text", "O campo senha deve ter pelo menos 6 dígitos");
+            cy.get("#errorMessageFirstName").should("have.text", "O campo senha deve ter pelo menos 6 dígitos");
+        });
     });
 });
