@@ -17,15 +17,15 @@ describe("Cadastro de Usuário", () => {
                 pattern: /\d/,
                 prefix: ''
             });
-            cy.visit("/register");
+            cy.AcessarCadastro();
         });
 
         it(`Cadastro com sucesso - ${tela}`, () => {
             cy.viewport(tela);
 
-            cy.get("#user").type(name);
-            cy.get("#email").type(email);
-            cy.get("#password").type(password);
+            cy.PreencherNome(name);
+            cy.PreencherEmail(email);
+            cy.PreencherSenha(password);
 
             cy.get("#btnRegister").click();
 
@@ -36,8 +36,8 @@ describe("Cadastro de Usuário", () => {
         it(`Cadastro com nome vazio - ${tela}`, () => {
             cy.viewport(tela);
 
-            cy.get("#email").type(email);
-            cy.get("#password").type(password);
+            cy.PreencherEmail(email);
+            cy.PreencherSenha(password);
 
             cy.get("#btnRegister").click();
 
@@ -47,8 +47,8 @@ describe("Cadastro de Usuário", () => {
         it(`Cadastro com e-mail vazio - ${tela}`, () => {
             cy.viewport(tela);
 
-            cy.get("#user").type(name);
-            cy.get("#password").type(password);
+            cy.PreencherNome(name);
+            cy.PreencherSenha(password);
 
             cy.get("#btnRegister").click();
 
@@ -58,9 +58,9 @@ describe("Cadastro de Usuário", () => {
         it(`Cadastro com senha vazia - ${tela}`, () => {
             cy.viewport(tela);
 
-            cy.get("#user").type(name);
-            cy.get("#email").type(email);
-
+            cy.PreencherNome(name);
+            cy.PreencherEmail(email);
+            
             cy.get("#btnRegister").click();
 
             cy.get("#errorMessageFirstName").should("have.text", "O campo senha deve ter pelo menos 6 dígitos");
@@ -77,9 +77,9 @@ describe("Cadastro de Usuário", () => {
         it(`Cadastro com e-mail inválido - ${tela}`, () => {
             cy.viewport(tela);
 
-            cy.get("#user").type(name);
-            cy.get("#email").type("email-invalido");
-            cy.get("#password").type(password);
+            cy.PreencherNome(name);
+            cy.PreencherEmail("email-invalido");
+            cy.PreencherSenha(password);
 
             cy.get("#btnRegister").click();
 
@@ -89,9 +89,9 @@ describe("Cadastro de Usuário", () => {
         it(`Cadastro com senha inválida - ${tela}`, () => {
             cy.viewport(tela);
 
-            cy.get("#user").type(name);
-            cy.get("#email").type(email);
-            cy.get("#password").type("123");
+            cy.PreencherNome(name);
+            cy.PreencherEmail(email);
+            cy.PreencherSenha("123");
 
             cy.get("#btnRegister").click();
 
