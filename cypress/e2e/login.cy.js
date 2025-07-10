@@ -1,57 +1,57 @@
 /// <reference types="cypress" />
 
+const login_page = require("../support/pages/login-page");
+
 describe("Página de Login", () => {
   it("Login com sucesso", () => {
-    cy.visit("/login");
+    login_page.acessarLogin();
 
     // preencher os campos de email e senha
-    cy.get("#user").type("isa@teste.com");
-    cy.get("#password").type("123456");
+    login_page.preencherEmail("isa@teste.com");
+    login_page.preencherSenha("123456");
 
     // clicar no botão de login
-    cy.get("#btnLogin").click();
+    login_page.clicarLogin();
 
     // validar mensagem de sucesso
-    cy.get("#swal2-title").should("contain", "Login realizado");
-
-    cy.get("#swal2-html-container").should("contain", "Olá, isa@teste.com");
+    login_page.loginSucesso();
   });
 
   it("Login com senha inválida", () => {
-    cy.visit("/login");
+    login_page.acessarLogin();
 
     // preencher os campos de email e senha
-    cy.get("#user").type("isa@teste.com");
-    cy.get("#password").type("1");
+    login_page.preencherEmail("isa@teste.com");
+    login_page.preencherSenha("1");
 
     // clicar no botão de login
-    cy.get("#btnLogin").click();
+    login_page.clicarLogin();
 
     // validar mensagem de erro
-    cy.get(".invalid_input").should("have.text", "Senha inválida.");
+    login_page.senhaInvalida();
   });
 
   it("Login com e-mail inválido", () => {
-    cy.visit("/login");
+    login_page.acessarLogin();
 
     // preencher os campos de email e senha
-    cy.get("#user").type("isa");
-    cy.get("#password").type("123456");
+    login_page.preencherEmail("isa");
+    login_page.preencherSenha("123456");
 
     // clicar no botão de login
-    cy.get("#btnLogin").click();
+    login_page.clicarLogin();
 
     // validar mensagem de erro
-    cy.get(".invalid_input").should("have.text", "E-mail inválido.");
+    login_page.emailInvalido();
   });
 
   it("Login com campos vazios", () => {
-    cy.visit("/login");
+    login_page.acessarLogin();
 
     // clicar no botão de login
-    cy.get("#btnLogin").click();
+    login_page.clicarLogin();
 
     // validar mensagem de erro
-    cy.get(".invalid_input").should("have.text", "E-mail inválido.");
+    login_page.emailInvalido();
   });
 });
